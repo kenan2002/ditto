@@ -20,7 +20,7 @@ use base64;
 use Error;
 use num_bigint::{BigUint, ToBigUint};
 use num_traits::cast::ToPrimitive;
-use rand::distributions::{Range};
+use rand::distributions::{Uniform};
 use rand::Rng;
 use rand;
 use dot::{Dot, SiteId, Counter};
@@ -120,15 +120,15 @@ impl Uid {
             if Uid::use_boundary_plus_strategy(level) {
                 let lo_bound = pos1+1;
                 let hi_bound = cmp::min(pos1+BOUNDARY, pos2);
-                Range::new(lo_bound, hi_bound)
+                Uniform::new(lo_bound, hi_bound)
             } else if pos2 <= BOUNDARY {
                 let lo_bound = pos1+1;
                 let hi_bound = pos2;
-                Range::new(lo_bound, hi_bound)
+                Uniform::new(lo_bound, hi_bound)
             } else {
                 let lo_bound = cmp::max(pos1+1, pos2-BOUNDARY);
                 let hi_bound = pos2;
-                Range::new(lo_bound, hi_bound)
+                Uniform::new(lo_bound, hi_bound)
             };
         let mut rng = rand::rngs::OsRng::new().unwrap();
         rng.sample(range)
